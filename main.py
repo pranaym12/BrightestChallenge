@@ -8,10 +8,10 @@ app = Flask(__name__)
 
 # This information is obtained upon registration of a new GitHub OAuth
 # application here: https://github.com/settings/applications/new
-client_id = "<your client key>"
-client_secret = "<your client secret>"
-authorization_base_url = 'https://github.com/login/oauth/authorize'
-token_url = 'https://github.com/login/oauth/access_token'
+client_id = "3BXHKSKAFIL2HZQ7D6"
+client_secret = "RDJMSHVG2RRBMPACDMRAQXL4OZ3MXWMU4TW56NK3KDDNHSV5JJ"
+authorization_base_url = 'https://www.eventbrite.com/oauth/authorize'
+token_url = 'https://www.eventbrite.com/oauth/token'
 
 
 @app.route("/")
@@ -57,7 +57,8 @@ def profile():
     """Fetching a protected resource using an OAuth 2 token.
     """
     github = OAuth2Session(client_id, token=session['oauth_token'])
-    return jsonify(github.get('https://api.github.com/user').json())
+    return jsonify(github.get('https://www.eventbriteapi.com/v3/users/me/').json())
+    # "query string parameter Include the token on the end of the URL as the token parameter:"
 
 
 if __name__ == "__main__":
