@@ -8,10 +8,10 @@ app = Flask(__name__)
 
 # This information is obtained upon registration of a new GitHub OAuth
 # application here: https://github.com/settings/applications/new
-client_id = "3BXHKSKAFIL2HZQ7D6"
-client_secret = "RDJMSHVG2RRBMPACDMRAQXL4OZ3MXWMU4TW56NK3KDDNHSV5JJ"
-authorization_base_url = 'https://www.eventbrite.com/oauth/authorize'
-token_url = 'https://www.eventbrite.com/oauth/token'
+client_id = "<your client key>"
+client_secret = "<your client secret>"
+authorization_base_url = 'https://github.com/login/oauth/authorize'
+token_url = 'https://github.com/login/oauth/access_token'
 
 
 @app.route("/")
