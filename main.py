@@ -2,6 +2,7 @@ from requests_oauthlib import OAuth2Session
 from flask import Flask, request, redirect, session, url_for
 from flask.json import jsonify
 import os
+from flask import render_template #for Home and About
 
 app = Flask(__name__)
 
@@ -13,9 +14,15 @@ client_secret = "RDJMSHVG2RRBMPACDMRAQXL4OZ3MXWMU4TW56NK3KDDNHSV5JJ"
 authorization_base_url = 'https://www.eventbrite.com/oauth/authorize'
 token_url = 'https://www.eventbrite.com/oauth/token'
 
-
 @app.route("/")
-def demo():
+def home():
+    return render_template("home.html")
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+@app.route("/login")
+def login():
     """Step 1: User Authorization.
 
     Redirect the user/resource owner to the OAuth provider (i.e. eventbrite)
