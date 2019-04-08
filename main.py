@@ -18,14 +18,14 @@ token_url = 'https://www.eventbrite.com/oauth/token'
 def demo():
     """Step 1: User Authorization.
 
-    Redirect the user/resource owner to the OAuth provider (i.e. Github)
+    Redirect the user/resource owner to the OAuth provider (i.e. eventbrite)
     using an URL with a few key OAuth parameters.
     """
-    github = OAuth2Session(client_id)
-    authorization_url, state = github.authorization_url(authorization_base_url)
+    eventbrite = OAuth2Session(client_id)
+    authorization_url, state = eventbrite.authorization_url(authorization_base_url)
 
     # State is used to prevent CSRF, keep this for later.
-    session['oauth_state'] = state
+    # session['oauth_state'] = state #comm4Pot
     return redirect(authorization_url)
 
 
@@ -40,8 +40,10 @@ def callback():
     in the redirect URL. We will use that to obtain an access token.
     """
 
-    github = OAuth2Session(client_id, state=session['oauth_state'])
-    token = github.fetch_token(token_url, client_secret=client_secret,
+    # eventbrite = OAuth2Session(client_id, state=session['oauth_state']) #comm4Pot
+    eventbrite = OAuth2Session(client_id)
+
+    token = eventbrite.fetch_token(token_url, client_secret=client_secret,
                                authorization_response=request.url)
 
     # At this point you can fetch protected resources but lets save
@@ -49,15 +51,15 @@ def callback():
     # in /profile.
     session['oauth_token'] = token
 
-    return redirect(url_for('.profile'))
+    return redirect(url_for('.profile')) #this was in the copypasta
 
 
 @app.route("/profile", methods=["GET"])
 def profile():
     """Fetching a protected resource using an OAuth 2 token.
     """
-    github = OAuth2Session(client_id, token=session['oauth_token'])
-    return jsonify(github.get('https://www.eventbriteapi.com/v3/users/me/').json())
+    eventbrite = OAuth2Session(client_id, token=session['oauth_token'])
+    return jsonify(eventbrite.get('https://www.eventbriteapi.com/v3/users/me/').json())
     # "query string parameter Include the token on the end of the URL as the token parameter:"
 
 
