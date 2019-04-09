@@ -1,3 +1,5 @@
+# N2S: print statement: #app.logger.error('hello world')
+
 #PIP: To use requests and requests_oauthlib
 #pip install requests requests_oauthlib
 from requests_oauthlib import OAuth2Session 
@@ -39,7 +41,7 @@ def login():
     Redirect the user/resource owner to the OAuth provider (i.e. eventbrite)
     using an URL with a few key OAuth parameters.
     """
-    eventbrite = OAuth2Session(client_id, redirect_uri = redirect_uri)
+    eventbrite = OAuth2Session(client_id, redirect_uri = redirect_uri) #redirect_uri may not be nec
     authorization_url, state = eventbrite.authorization_url(authorization_base_url)
 
     # State is used to prevent CSRF, keep this for later.
@@ -57,10 +59,19 @@ def callback():
     callback URL. With this redirection comes an authorization code included
     in the redirect URL. We will use that to obtain an access token.
     """
-    code = request.args.get("code") #right now code gets the actual code woohoo
-    # app.logger.error('code: ') #this is how you comment something
+    #if I have: /callback?state=kTTKbGfWjIh05sGZNLR0Cdwl35AQsw&code=OOIBFRNRHT6CPB4V2DBH
+    #then "return code" displays everything after "&code=" 
+    code = request.args.get("code") #right now code gets the code
 
+    #STEP 1: get token
+    #A: try out eventbrite API example
+    #B: try googling for some "get_token" function
+    return code
+    #STEP 2: redirect to https://www.eventbriteapi.com/v3/users/me/?token=SESXYS4X3FJ5LHZRWGKQ
+
+    
     eventbrite = OAuth2Session(client_id=client_id, redirect_uri=redirect_uri, state=session['oauth_state']) #comm4Pot
+    #^redirect_uri may not be nec
     # eventbrite = OAuth2Session(client_id) #not enough inputs in this one
     
     token = eventbrite.fetch_token(token_url, client_secret=client_secret,authorization_response=request.url)
