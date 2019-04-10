@@ -10,13 +10,16 @@
     <h1> Your Events! </h1>
     {% set count = [1] %}
     {%for event in events%}
-        <div>
-            <h2>Event {{count[0]}}: {{event["name"]["text"]}}</h2>
-            <p>Description: {{event["description"]["text"]}}</p>
-            <p>Local start time and date: {{event["start"]["local"]}}</p>
-            <p>Link: <a href={{event["url"]}}>{{event["url"]}}</a></p>
-        </div>
-        {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
+      <!-- {% set time_date = event["start"]["local"] %} -->
+      {%set date, time = event["start"]["local"].split("T") %}
+      <div>
+          <h2>Event {{count[0]}}: {{event["name"]["text"]}}</h2>
+          <p>Description: {{event["description"]["text"]}}</p>
+          <p>Date: {{date}} </p>
+          <p>Local start time: {{time[0:-3]}}</p>
+          <p>Link: <a href={{event["url"]}}>{{event["url"]}}</a></p>
+      </div>
+      {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
     {%endfor %}
 
     {% endblock %}
