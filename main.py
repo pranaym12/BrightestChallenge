@@ -66,16 +66,14 @@ def callback():
     #[Content-type!] application/x-www-form-urlencoded header:
     #[URL-encoded-Data!] code=THE_USERS_AUTH_CODE&client_secret=YOUR_CLIENT_SECRET&client_id=YOUR_API_KEY&grant_type=authorization_code
     code = request.args.get("code") #right now code gets the code
+    url = "https://www.eventbrite.com/oauth/token"
+    payload = "code="+code+"&client_id=3BXHKSKAFIL2HZQ7D6&client_secret=RDJMSHVG2RRBMPACDMRAQXL4OZ3MXWMU4TW56NK3KDDNHSV5JJ&grant_type=authorization_code"
+    headers = {'Content-Type': "application/x-www-form-urlencoded",}
 
-    # WRONG? dictKey = "application/x-www-form-urlencoded header"
-    # WRONG: dictVal = {"code": code, "client_secret": client_secret, "client_id": client_id, "grant_type": "authorization_code"}
-    headers = {"Content-type":"application/x-www-form-urlencoded"}
-    allInfo = "code="+code+"&client_secret="+client_secret+"&client_id="+client_id+"&grant_type=authorization_code"
-    res = requests.post('https://www.eventbrite.com/oauth/token?'+allInfo, headers=headers)
-    app.logger.error('response from server:',res.text)
-    dictFromServer = res.json()
+    response = requests.request("POST", url, data=payload, headers=headers)
 
-    return code + "\n"+str(dictFromServer)
+    return str(response.json()["access_token"])
+
     #STEP 2: redirect to https://www.eventbriteapi.com/v3/users/me/?token=SESXYS4X3FJ5LHZRWGKQ
 
     
