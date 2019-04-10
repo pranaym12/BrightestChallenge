@@ -7,9 +7,11 @@
   <body>
     {% extends "template.html" %}
     {% block content %}
-    <h1> About This App </h1>
+    <h1> About </h1>
     <p> This app was created by Pranay Mittal in April, 2019.</p>
-    <p> It uses Flask and OAuth through the Eventbrite API to show a user the events they've created.</p>
+    <p> I used Flask and OAuth 2.0 through the Eventbrite API to show a user the events they've created.</p>
+    <p>Additionally, I used the Google Cloud App Engine for hosting and Postman for post requests.</p>
+    <h1><a href="{{ url_for('login') }}">Login to EventBrite</a></h1>
     {% endblock %}
   </body>
 </html>

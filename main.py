@@ -56,13 +56,13 @@ def eventspage():
     callback URL. With this redirection comes an authorization code included
     in the redirect URL. We will use that to obtain an access token.
     """
-
-    if "code" in session and "token" in session and session["code"] and session["token"]: #in case you refresh the page
+    #in case you refresh the page, and code and token have been loaded once
+    if "code" in session and "token" in session and session["code"] and session["token"]:         
         code = session["code"]
         token = session["token"]
         payload = "code="+code+"&client_id="+client_id+"&client_secret="+client_secret+"&grant_type=authorization_code"
         headers = {'Content-Type': "application/x-www-form-urlencoded"}
-    else:
+    else: #if it's the first time loading, and you don't have code or token
         #STEP 1: get token through post request
         code = request.args.get("code") #right now code gets the code from the URL
         token_url = "https://www.eventbrite.com/oauth/token"
@@ -79,7 +79,7 @@ def eventspage():
     personal_info_url ="https://www.eventbriteapi.com/v3/users/me/?token="+token #use this to find info about yourself
     personal_info_response = requests.request("GET", personal_info_url, data=payload, headers=headers)
     # personal_info = str(personal_info_response.text)
-    name = str(personal_info_response.json()["name"])
+    # name = str(personal_info_response.json()["name"])
 
     headers = {'Content-Type': 'application/json'}
     event_url = "https://www.eventbriteapi.com/v3/users/me/events/?token="+token
@@ -92,9 +92,9 @@ def eventspage():
     #Location:
     #Start[Local]
     #URL
-
+    # return render_template(events.html, events=events)
     # return first_name+" "+last_name+" Code: "+code + " Token: "+token+"\n\n"+" Foo: "+foo #display the token!
-    return name+" Code: "+code + " Token: "+token+"\n\n"+" Foo: "+foo #display the token!
+    return " Code: "+code + " Token: "+token+"\n\n"+" Foo: "+foo #display the token!
 
 
 
