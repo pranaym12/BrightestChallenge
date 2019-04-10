@@ -11,6 +11,7 @@ from flask import render_template #for Home and About
 import logging #also for printing?
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 
 
 # This information is obtained upon registration of a new GitHub OAuth
@@ -109,5 +110,5 @@ if __name__ == "__main__":
     # This allows us to use a plain HTTP callback
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = "1"
 
-    app.secret_key = os.urandom(24)
+    app.config['SESSION_TYPE'] = 'filesystem'
     app.run(debug=True)
