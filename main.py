@@ -17,7 +17,7 @@ app = Flask(__name__)
 # application here: https://github.com/settings/applications/new
 client_id = "3BXHKSKAFIL2HZQ7D6"
 client_secret = "RDJMSHVG2RRBMPACDMRAQXL4OZ3MXWMU4TW56NK3KDDNHSV5JJ"
-redirect_uri = 'http://localhost:5000/callback'
+redirect_uri = 'http://localhost:5000/eventspage'
 #From Eventbrite documentation
 authorization_base_url = 'https://www.eventbrite.com/oauth/authorize'
 token_url = 'https://www.eventbrite.com/oauth/token'
@@ -39,7 +39,8 @@ def login():
     """
     eventbrite = OAuth2Session(client_id, redirect_uri = redirect_uri) #redirect_uri may not be nec
     authorization_url, state = eventbrite.authorization_url(authorization_base_url)
-
+    session["token"] = None 
+    session["code"] = None
     # State is used to prevent CSRF, keep this for later.
     session['oauth_state'] = state #comm4Pot
     return redirect(authorization_url)
@@ -47,8 +48,8 @@ def login():
 
 # Step 2: User authorization, this happens on the provider.
 
-@app.route("/callback", methods=["GET"])
-def callback():
+@app.route("/eventspage", methods=["GET"])
+def eventspage():
     """ Step 3: Retrieving an access token.
 
     The user has been redirected back from the provider to your registered
@@ -56,26 +57,44 @@ def callback():
     in the redirect URL. We will use that to obtain an access token.
     """
 
-    #STEP 1: get token through post request
-    code = request.args.get("code") #right now code gets the code from the URL
-    token_url = "https://www.eventbrite.com/oauth/token"
-    payload = "code="+code+"&client_id="+client_id+"&client_secret="+client_secret+"&grant_type=authorization_code"
-    headers = {'Content-Type': "application/x-www-form-urlencoded"}
-    #make the post request!
-    response = requests.request("POST", token_url, data=payload, headers=headers)
-    token = str(response.json()["access_token"])
+    if "code" in session and "token" in session and session["code"] and session["token"]: #in case you refresh the page
+        code = session["code"]
+        token = session["token"]
+        payload = "code="+code+"&client_id="+client_id+"&client_secret="+client_secret+"&grant_type=authorization_code"
+        headers = {'Content-Type': "application/x-www-form-urlencoded"}
+    else:
+        #STEP 1: get token through post request
+        code = request.args.get("code") #right now code gets the code from the URL
+        token_url = "https://www.eventbrite.com/oauth/token"
+        payload = "code="+code+"&client_id="+client_id+"&client_secret="+client_secret+"&grant_type=authorization_code"
+        headers = {'Content-Type': "application/x-www-form-urlencoded"}
+        #make the post request!
+        response = requests.request("POST", token_url, data=payload, headers=headers)
+        token = str(response.json()["access_token"])
 
-    #STEP 2: redirect to https://www.eventbriteapi.com/v3/users/me/?token=SESXYS4X3FJ5LHZRWGKQ
+        session["code"] = code
+        session["token"] = token
+
+    #STEP 2: Get the personal Info
     personal_info_url ="https://www.eventbriteapi.com/v3/users/me/?token="+token #use this to find info about yourself
-    personal_info_response = requests.request("POST", event_url, data=payload, headers=headers)
-    personal_info = str(personal_info_response.text)
+    personal_info_response = requests.request("GET", personal_info_url, data=payload, headers=headers)
+    # personal_info = str(personal_info_response.text)
+    name = str(personal_info_response.json()["name"])
 
-    # headers = {'Content-Type': 'application/json'}
+    headers = {'Content-Type': 'application/json'}
     event_url = "https://www.eventbriteapi.com/v3/users/me/events/?token="+token
-    event_response = requests.request("POST", event_url, data=payload, headers=headers)
-    foo = str(event_response.text)
+    event_response = requests.request("GET", event_url,headers=headers)
+    events = event_response.json()["events"]
+    foo = str(events)
 
-    return " Code: "+code + " Token: "+token+"\n\n"+" Foo: "+foo #display the token!
+    #Event: 
+    #Description:
+    #Location:
+    #Start[Local]
+    #URL
+
+    # return first_name+" "+last_name+" Code: "+code + " Token: "+token+"\n\n"+" Foo: "+foo #display the token!
+    return name+" Code: "+code + " Token: "+token+"\n\n"+" Foo: "+foo #display the token!
 
 
 
