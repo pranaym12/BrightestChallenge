@@ -1,2 +1,6 @@
 Flask
 Werkzeug
+flask.json
+requests_oauthlib
+requests
+logging
