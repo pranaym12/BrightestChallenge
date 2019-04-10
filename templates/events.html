@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
+    <meta arset="utf-8">
     <title>Your Events | Eventbrite Pranay</title>
   </head>
   <body>
     {% extends "template.html" %}
     {% block content %}
-    <h1> Your Events! </h1>
+    <h1> Your Created Events! </h1>
     {% set count = [1] %}
     {%for event in events%}
       <!-- {% set time_date = event["start"]["local"] %} -->
