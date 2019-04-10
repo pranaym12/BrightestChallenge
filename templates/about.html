@@ -2,15 +2,16 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>About Flask</title>
+    <title>About | Eventbrite Pranay</title>
   </head>
   <body>
     {% extends "template.html" %}
     {% block content %}
-    <h1> About Flask </h1>
-    <p> Flask is a micro web framework written in Python.</p>
-    <p> Applications that use the Flask framework include Pinterest,
-      LinkedIn, and the community web page for Flask itself.</p>
+    <h2> About </h2>
+    <p> This app was created by Pranay Mittal in April, 2019.</p>
+    <p> I used Flask and OAuth 2.0 through the Eventbrite API to show a user the events they've created.</p>
+    <p>Additionally, I used the Google Cloud App Engine for hosting and Postman for post requests.</p>
+    <h1><a href="{{ url_for('login') }}">Login to EventBrite</a></h1>
     {% endblock %}
   </body>
 </html>

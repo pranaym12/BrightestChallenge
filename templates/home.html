@@ -2,14 +2,15 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Flask Tutorial</title>
+    <title>Home | EventBrite Pranay</title>
   </head>
   <body>
     {% extends "template.html" %}
     {% block content %}
-    <h1> My First Try Using Flask </h1>
-    <p> Flask is Fun </p>
-    
+    <p> Welcome to my (Pranay's) EventBrite app!</p>
+    <p> Just sign in on the link below and you'll see all your events!</p>
+    <h1><a href="{{ url_for('login') }}">Login to EventBrite</a></h1>
+
     {% endblock %}
   </body>
 </html>
