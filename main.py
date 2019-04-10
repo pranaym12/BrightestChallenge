@@ -59,29 +59,35 @@ def callback():
     callback URL. With this redirection comes an authorization code included
     in the redirect URL. We will use that to obtain an access token.
     """
-    #if I have: /callback?state=kTTKbGfWjIh05sGZNLR0Cdwl35AQsw&code=OOIBFRNRHT6CPB4V2DBH
-    #then "return code" displays everything after "&code=" 
-    code = request.args.get("code") #right now code gets the code
 
     #STEP 1: get token
-    #A: try out eventbrite API example
-    #B: try googling for some "get_token" function
-    return code
+    #A: send a POST request to https://www.eventbrite.ocm/oauth/token
+    #B: This POST must contain the following urlencoded data, along with a Content-type: 
+    #[Content-type!] application/x-www-form-urlencoded header:
+    #[URL-encoded-Data!] code=THE_USERS_AUTH_CODE&client_secret=YOUR_CLIENT_SECRET&client_id=YOUR_API_KEY&grant_type=authorization_code
+    code = request.args.get("code") #right now code gets the code
+
+    # WRONG? dictKey = "application/x-www-form-urlencoded header"
+    dictKey = "application/x-www-form-urlencoded"
+    dictVal = "code="+code+"&client_secret="+client_secret+"&client_id="+client_id+"&grant_type=authorization_code"
+    # WRONG: dictVal = {"code": code, "client_secret": client_secret, "client_id": client_id, "grant_type": "authorization_code"}
+    res = requests.post('https://www.eventbrite.com/oauth/token', data={dictKey: dictVal})
+    app.logger.error('response from server:',res.text)
+    dictFromServer = res.json()
+
+    return code + "\n"+str(dictFromServer)
     #STEP 2: redirect to https://www.eventbriteapi.com/v3/users/me/?token=SESXYS4X3FJ5LHZRWGKQ
 
     
-    eventbrite = OAuth2Session(client_id=client_id, redirect_uri=redirect_uri, state=session['oauth_state']) #comm4Pot
+    ###eventbrite = OAuth2Session(client_id=client_id, redirect_uri=redirect_uri, state=session['oauth_state']) #comm4Pot
     #^redirect_uri may not be nec
     # eventbrite = OAuth2Session(client_id) #not enough inputs in this one
-    
-    token = eventbrite.fetch_token(token_url, client_secret=client_secret,authorization_response=request.url)
-
+    ###token = eventbrite.fetch_token(token_url, client_secret=client_secret,authorization_response=request.url)
     # At this point you can fetch protected resources but lets save
     # the token and show how this is done from a persisted token
     # in /profile.
-    session['oauth_token'] = token
-
-    return redirect(url_for('.profile')) #this was in the copypasta
+    ###session['oauth_token'] = token
+    ###return redirect(url_for('.profile')) #this was in the copypasta
 
 
 @app.route("/profile", methods=["GET"])
