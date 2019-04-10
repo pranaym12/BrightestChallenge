@@ -11,18 +11,17 @@ from flask import render_template #for Home and About
 import logging #also for printing?
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = os.urandom(24) #moved from if __name__ == "__main__":
 
-
-# This information is obtained upon registration of a new GitHub OAuth
-# application here: https://github.com/settings/applications/new
+# This information is obtained upon registration of a new EventBrite OAuth
 client_id = "3BXHKSKAFIL2HZQ7D6"
 client_secret = "RDJMSHVG2RRBMPACDMRAQXL4OZ3MXWMU4TW56NK3KDDNHSV5JJ"
 redirect_uri = 'http://localhost:5000/eventspage'
+# redirect_uri = 'https://eventbrite-pranay.appspot.com/eventspage'
+
 #From Eventbrite documentation
 authorization_base_url = 'https://www.eventbrite.com/oauth/authorize'
 token_url = 'https://www.eventbrite.com/oauth/token'
-refresh_url = token_url #apparently true for Google but not all?
 
 @app.route("/")
 def home():
@@ -43,9 +42,8 @@ def login():
     session["token"] = None 
     session["code"] = None
     # State is used to prevent CSRF, keep this for later.
-    session['oauth_state'] = state #comm4Pot
+    session['oauth_state'] = state #comm4Pot #might be unncessary?
     return redirect(authorization_url)
-
 
 # Step 2: User authorization, this happens on the provider.
 
@@ -77,8 +75,8 @@ def eventspage():
         session["token"] = token
 
     #STEP 2: Get the personal Info
-    personal_info_url ="https://www.eventbriteapi.com/v3/users/me/?token="+token #use this to find info about yourself
-    personal_info_response = requests.request("GET", personal_info_url, data=payload, headers=headers)
+    # personal_info_url ="https://www.eventbriteapi.com/v3/users/me/?token="+token #use this to find info about yourself
+    # personal_info_response = requests.request("GET", personal_info_url, data=payload, headers=headers)
     # personal_info = str(personal_info_response.text)
     # name = str(personal_info_response.json()["name"])
 
@@ -86,16 +84,9 @@ def eventspage():
     event_url = "https://www.eventbriteapi.com/v3/users/me/events/?token="+token
     event_response = requests.request("GET", event_url,headers=headers)
     events = event_response.json()["events"]
-    foo = str(events)
+    # foo = str(events)
 
-    #Location:
-    #Start[Local]
-    #URL
     return render_template('events.html', events=events)
-    # return first_name+" "+last_name+" Code: "+code + " Token: "+token+"\n\n"+" Foo: "+foo #display the token!
-    # return " Code: "+code + " Token: "+token+"\n\n"+" Foo: "+foo #display the token!
-
-
 
 @app.route("/profile", methods=["GET"])
 def profile():
