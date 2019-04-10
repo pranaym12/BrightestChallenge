@@ -7,13 +7,13 @@
   <body>
     {% extends "template.html" %}
     {% block content %}
-    <h1> Your Created Events! </h1>
+    <h2> Your Created Events! </h2>
     {% set count = [1] %}
     {%for event in events%}
       <!-- {% set time_date = event["start"]["local"] %} -->
       {%set date, time = event["start"]["local"].split("T") %}
       <div>
-          <h2>Event {{count[0]}}: {{event["name"]["text"]}}</h2>
+          <h3>Event {{count[0]}}: {{event["name"]["text"]}}</h2>
           <p>Description: {{event["description"]["text"]}}</p>
           <p>Date: {{date}} </p>
           <p>Local start time: {{time[0:-3]}}</p>

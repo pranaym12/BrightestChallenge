@@ -7,9 +7,10 @@
   <body>
     {% extends "template.html" %}
     {% block content %}
-    <p> Welcome to my (Pranay's) EventBrite app!</p>
-    <p> Just sign in on the link below and you'll see all your events!</p>
-    <h1><a href="{{ url_for('login') }}">Login to EventBrite</a></h1>
+    <h2> Welcome to Pranay's EventBrite app!</h2>
+    <p>If you login with your Eventbrite account below, you can see a list of all the events you've created.</p>
+    <p>This website was created by Pranay Mittal using Flask, OAuth, and Google Cloud App Engine. See "About" for more info.</p>
+    <h1><a href="{{ url_for('login') }}">Login with Eventbrite OAuth to see your events</a></h1>
 
     {% endblock %}
   </body>

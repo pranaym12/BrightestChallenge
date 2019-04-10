@@ -8,10 +8,13 @@
     {% extends "template.html" %}
     {% block content %}
     <h2> About </h2>
-    <p> This app was created by Pranay Mittal in April, 2019.</p>
-    <p> I used Flask and OAuth 2.0 through the Eventbrite API to show a user the events they've created.</p>
-    <p>Additionally, I used the Google Cloud App Engine for hosting and Postman for post requests.</p>
-    <h1><a href="{{ url_for('login') }}">Login to EventBrite</a></h1>
+    <p> This app was created in April 2019, by <a href="https://github.com/pranaym12">Pranay Mittal</a> (Rice University, Class of 2021) for the <a href="https://www.brightest.io/">Brightest</a> coding challenge.</p>
+    <p>What did I use?</p>
+    <li>Flask/Python to construct the app.</li>
+    <li>OAuth 2 + Eventbrite API to let a user sign in and see their Eventbrite events.</li>
+    <li>Google Cloud App Engine for hosting this app.</li>    
+    <li>Postman for processing POST/GET requests.</li>
+    <h1><a href="{{ url_for('login') }}">Login with Eventbrite OAuth to see your events</a></h1>
     {% endblock %}
   </body>
 </html>
