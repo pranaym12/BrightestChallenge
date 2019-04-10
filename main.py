@@ -68,10 +68,10 @@ def callback():
     code = request.args.get("code") #right now code gets the code
 
     # WRONG? dictKey = "application/x-www-form-urlencoded header"
-    dictKey = "application/x-www-form-urlencoded"
-    dictVal = "code="+code+"&client_secret="+client_secret+"&client_id="+client_id+"&grant_type=authorization_code"
     # WRONG: dictVal = {"code": code, "client_secret": client_secret, "client_id": client_id, "grant_type": "authorization_code"}
-    res = requests.post('https://www.eventbrite.com/oauth/token', data={dictKey: dictVal})
+    headers = {"Content-type":"application/x-www-form-urlencoded"}
+    allInfo = "code="+code+"&client_secret="+client_secret+"&client_id="+client_id+"&grant_type=authorization_code"
+    res = requests.post('https://www.eventbrite.com/oauth/token?'+allInfo, headers=headers)
     app.logger.error('response from server:',res.text)
     dictFromServer = res.json()
 
