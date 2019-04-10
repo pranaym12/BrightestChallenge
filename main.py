@@ -10,14 +10,19 @@ from flask import render_template #for Home and About
 
 import logging #also for printing?
 
+#this, and adding requests_toolbelt to requirements.txt fixed this problem
+# https://stackoverflow.com/questions/52929871/get-request-resulting-in-verifiedhttpsconnection-object-has-no-attribute-tunne
+from requests_toolbelt.adapters import appengine 
+appengine.monkeypatch()
+
 app = Flask(__name__)
 app.secret_key = os.urandom(24) #moved from if __name__ == "__main__":
 
 # This information is obtained upon registration of a new EventBrite OAuth
 client_id = "3BXHKSKAFIL2HZQ7D6"
 client_secret = "RDJMSHVG2RRBMPACDMRAQXL4OZ3MXWMU4TW56NK3KDDNHSV5JJ"
-redirect_uri = 'http://localhost:5000/eventspage'
-# redirect_uri = 'https://eventbrite-pranay.appspot.com/eventspage'
+# redirect_uri = 'http://localhost:5000/eventspage'
+redirect_uri = 'https://eventbrite-pranay.appspot.com/eventspage'
 
 #From Eventbrite documentation
 authorization_base_url = 'https://www.eventbrite.com/oauth/authorize'

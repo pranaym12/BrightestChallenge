@@ -4,3 +4,4 @@ flask.json
 requests_oauthlib
 requests
 logging
+requests_toolbelt
