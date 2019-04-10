@@ -87,14 +87,12 @@ def eventspage():
     events = event_response.json()["events"]
     foo = str(events)
 
-    #Event: 
-    #Description:
     #Location:
     #Start[Local]
     #URL
-    # return render_template(events.html, events=events)
+    return render_template('events.html', events=events)
     # return first_name+" "+last_name+" Code: "+code + " Token: "+token+"\n\n"+" Foo: "+foo #display the token!
-    return " Code: "+code + " Token: "+token+"\n\n"+" Foo: "+foo #display the token!
+    # return " Code: "+code + " Token: "+token+"\n\n"+" Foo: "+foo #display the token!
 
 
 

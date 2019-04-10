@@ -2,14 +2,23 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Your Events</title>
+    <title>Your Events | Eventbrite Pranay</title>
   </head>
   <body>
     {% extends "template.html" %}
     {% block content %}
     <h1> Your Events! </h1>
+    {% set count = [1] %}
     {%for event in events%}
-        <p>hi</p>
+        <div>
+            <h2>Event {{count[0]}}: {{event["name"]["text"]}}</h2>
+            <p>Description: {{event["description"]["text"]}}</p>
+            <p>Local start time and date: {{event["start"]["local"]}}</p>
+            <p>Link: <a href={{event["url"]}}>{{event["url"]}}</a></p>
+        </div>
+        {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
+    {%endfor %}
+
     {% endblock %}
   </body>
 </html>
