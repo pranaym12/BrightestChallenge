@@ -58,15 +58,20 @@ def callback():
 
     #STEP 1: get token through post request
     code = request.args.get("code") #right now code gets the code from the URL
-    url = "https://www.eventbrite.com/oauth/token"
+    token_url = "https://www.eventbrite.com/oauth/token"
     payload = "code="+code+"&client_id="+client_id+"&client_secret="+client_secret+"&grant_type=authorization_code"
     headers = {'Content-Type': "application/x-www-form-urlencoded",}
     #make the post request!
-    response = requests.request("POST", url, data=payload, headers=headers)
-
-    return str(response.json()["access_token"]) #display the token!
+    response = requests.request("POST", token_url, data=payload, headers=headers)
+    token = str(response.json()["access_token"])
 
     #STEP 2: redirect to https://www.eventbriteapi.com/v3/users/me/?token=SESXYS4X3FJ5LHZRWGKQ
+    event_url = "https://www.eventbriteapi.com/v3/users/me/?token="+token
+    event_response = requests.request("POST", event_url, data=payload, headers=headers)
+    foo = str(event_response.text)
+
+    return " Code: "+code + " Token: "+token+"\n\n"+" Foo: "+foo #display the token!
+
 
 
 @app.route("/profile", methods=["GET"])
