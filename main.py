@@ -20,7 +20,13 @@ app.secret_key = os.urandom(24) #moved from if __name__ == "__main__":
 
 # This information is obtained upon registration of a new EventBrite OAuth
 client_id = "3BXHKSKAFIL2HZQ7D6"
-client_secret = "RDJMSHVG2RRBMPACDMRAQXL4OZ3MXWMU4TW56NK3KDDNHSV5JJ"
+
+#DIFFERENT WAYS OF GETTING CLIENT_SECRET
+#according to https://cloud.google.com/deployment-manager/docs/configuration/templates/use-environment-variables
+#and https://cloud.google.com/appengine/docs/standard/python3/config/appref
+client_secret = os.environ.get("client_secret") #based on some rando tutorial
+
+#REDIRECT URI: Localhost Or Cloud?
 # redirect_uri = 'http://localhost:5000/eventspage'
 redirect_uri = 'https://eventbrite-pranay.appspot.com/eventspage'
 
