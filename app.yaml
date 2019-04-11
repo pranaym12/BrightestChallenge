@@ -1,4 +1,7 @@
 runtime: python27
+env_variables:
+  client_secret: 'RDJMSHVG2RRBMPACDMRAQXL4OZ3MXWMU4TW56NK3KDDNHSV5JJ'
+  MY_VAR: 'my value'
 api_version: 1
 threadsafe: true
 handlers:
@@ -6,7 +9,6 @@ handlers:
   static_dir: static
 - url: /.*
   script: main.app
-  
 libraries:
   - name: ssl
     version: latest
